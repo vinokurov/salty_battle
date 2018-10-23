@@ -2,7 +2,7 @@ import pandas as pd
 from io import StringIO
 
 import pytest
-from pandas.util.testing import assert_series_equal
+from pandas.util.testing import assert_series_equal, assert_frame_equal
 
 from salty.battle.prototype import replay_spike_detection
 
@@ -15,14 +15,16 @@ def text_to_df(df_str):
                          parse_dates=True,
                          )
 
-def test_():
+
+def test_text_to_df():
     df = text_to_df("""
                  A   B
     2018-05-01   1   2
     2018-05-02   1   20
     """)
-    print(df)
-    print(df.index)
+    expected_df = pd.DataFrame([{'A': 1, 'B': 2}, {'A': 1, 'B': 20}],
+                               index=pd.date_range('2018-05-01', '2018-05-02'))
+    assert_frame_equal(expected_df, df)
 
 
 def test_spike_detect():
@@ -60,6 +62,7 @@ def test_spike_detect_2():
     assert_series_equal(data.SPIKES.reset_index(drop=True),
                         spikes, check_names=False)
 
+
 @pytest.mark.skip
 def process_data_camp_hollywood():
     battles = pd.read_csv('c:/temp/camp_hollywood_2017.csv')
@@ -73,12 +76,13 @@ def process_data_camp_hollywood():
     voting_data.sort_values('ts', inplace=True)
     voting_data['battle'] = ''
     for ix, b_ts in battles_rel_ts.iteritems():
-        voting_data.loc[voting_data.ts >= b_ts, 'battle'] = ix +1
+        voting_data.loc[voting_data.ts >= b_ts, 'battle'] = ix + 1
 
     voting_data.to_csv('c:/temp/camp_hollywood_2017_voting_data.csv', index=False)
     # print voting_data
 
 
+@pytest.mark.skip
 def test_camp_hollywood():
     voting_df = pd.read_csv('c:/temp/camp_hollywood_2017_voting_data.csv')
     voting_df['ts_int'] = voting_df.ts.astype('int')

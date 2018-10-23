@@ -1,14 +1,13 @@
 from datetime import datetime
 from time import sleep, time
-from typing import NamedTuple
-import pandas as pd
 
+# import matplotlib.pyplot as plt
 import numpy as np
-import pylab
+import pandas as pd
+# import pylab
 from ably import AblyRest
-import matplotlib.pyplot as plt
+from salty.battle.config import ALBY_KEY
 
-API_KEY = 'iu0Lmw.hC3rhw:MEeGgoGc7kI4xQa1'
 
 def read_messages(message_history):
     timestamp = None
@@ -17,6 +16,7 @@ def read_messages(message_history):
         for m in message_history.items:
             print(m.as_dict())
     return timestamp
+
 
 class StatsContext:
     def __init__(self):
@@ -54,7 +54,7 @@ class StatsContext:
 
 
 def listen_and_read():
-    client = AblyRest(API_KEY)
+    client = AblyRest(ALBY_KEY)
     channel = client.channels.get('salty-voting')
 
     print('Listening...')
@@ -71,7 +71,7 @@ def listen_and_read():
 
 
 def listen():
-    client = AblyRest(API_KEY)
+    client = AblyRest(ALBY_KEY)
     channel = client.channels.get('salty-voting')
 
     print('Listening...')
@@ -132,7 +132,7 @@ def record_votes_kb():
     res_list = []
 
     res_list.append({'ts': datetime.now().timestamp(), 'vote': 's'})
-    user_ids = [random.randint(0, 100), random.randint(0, 100),]
+    user_ids = [random.randint(0, 100), random.randint(0, 100), ]
     keys_mapping = {
         'q': user_ids[0],
         'w': user_ids[0],
@@ -161,7 +161,7 @@ def record_votes_kb():
         df.to_csv(f)
 
     df['ts_sec'] = df.ts.astype('int')
-    stats_df = df.groupby(['ts_sec','vote']).vote.count().unstack()
+    stats_df = df.groupby(['ts_sec', 'vote']).vote.count().unstack()
     print(stats_df)
 
 
@@ -195,11 +195,11 @@ def replay():
         res_df = res_df.fillna(0)
         res_df.index = pd.datetime(2018, 1, 1, 0, 1, 30) + pd.to_timedelta(res_df.index, unit='s')
 
-        ax1 = plt.subplot(211)
+        # ax1 = plt.subplot(211)
 
-        res_df[['Threshold L', 'Threshold R']].plot.area(ax=ax1, color='xkcd:silver', legend=False)
-        res_df[['Mean L', 'Mean R']].plot.area(ax=ax1, color='xkcd:grey', legend=False)
-        res_df[['Freq L', 'Freq R']].plot.line(ax=ax1, title=f'Battle {b_id}')
+        # res_df[['Threshold L', 'Threshold R']].plot.area(ax=ax1, color='xkcd:silver', legend=False)
+        # res_df[['Mean L', 'Mean R']].plot.area(ax=ax1, color='xkcd:grey', legend=False)
+        # res_df[['Freq L', 'Freq R']].plot.line(ax=ax1, title=f'Battle {b_id}')
 
         # pylab.savefig(f'c:/temp/battle_{b_id}.png')
         # pylab.show()
@@ -226,13 +226,13 @@ def replay():
             res_df['Score L'].iloc[ix] = score_l
             res_df['Score R'].iloc[ix] = score_r
 
-        ax2 = plt.subplot(212, sharex=ax1)
-        res_df[['Score L', 'Score R']].plot.line(ax=ax2)
+        # ax2 = plt.subplot(212, sharex=ax1)
+        # res_df[['Score L', 'Score R']].plot.line(ax=ax2)
         # res_df[['Bonus L', 'Bonus R']].plot.scatter(x='',ax=ax2, legend=False, color='black')
 
         # import pdb;pdb.set_trace()
-        pylab.savefig(f'c:/temp/battle_{b_id}.png')
-        pylab.close()
+        # pylab.savefig(f'c:/temp/battle_{b_id}.png')
+        # pylab.close()
         #
         #     print_scores(b_id, i, score_l, score_r)
         #     sleep(1)
