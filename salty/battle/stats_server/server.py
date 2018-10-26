@@ -60,7 +60,7 @@ class StatsServer:
     def stop_battle(self):
         self.battle_started = False
         #TODO: winner
-        if self.battle.scores.left.total >= self.battle.scores.left.total:
+        if self.battle.scores.left.total >= self.battle.scores.right.total:
             winner = 'left'
         else:
             winner = 'right'
