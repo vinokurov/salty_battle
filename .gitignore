@@ -31,7 +31,6 @@ wheels/
 *.egg*
 web_js/salty_battle_js/dist
 web_js/salty_battle_js/node_modules
-web_js/salty_battle_js/public
 web_js/salty_battle_js/package-lock.json
 
 salty/battle/secrets.yaml
