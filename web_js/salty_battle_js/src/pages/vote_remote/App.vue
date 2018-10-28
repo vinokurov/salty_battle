@@ -14,6 +14,12 @@
                   </PopMessage>
               </div>
 
+              <div style="position:absolute; top:0; left:20%; width:60%; height:30%; z-index:-50">
+                <PopBaloon :pose="bonusBaloonShow?'visible':'hidden'">
+                  <BonusBaloon :symbol="bonusBaloonSymbol"/>
+                </PopBaloon>
+              </div>
+
               <div style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:-50;">
                 <div style="height:15%"/>
                 <center>
@@ -49,7 +55,8 @@
                   <Box style="width:35%">
                     <b-button variant="outline-light" @click="publishRight" :disabled="!buttonRightActive" block style="height:100%">
                       <center>
-                      <i class="far display-4" v-bind:class="'fa-'+emojis[right.emoji]"/><br>
+                      <!-- <i class="far display-4" v-bind:class="'fa-'+emojis[right.emoji]"/><br> -->
+                      <div style="width:80%"><LuchaChili symbol="afraid"/></div>
                       RIGHT
                     </center>
                     </b-button>
@@ -59,9 +66,13 @@
 
             </div>
             <b-button @click="unmute">Unmute</b-button>
+            <b-button @click="showRandomBonusBaloon">Baloon</b-button>
             <!-- <b-button @click="showBattleStart">battle</b-button>
             <b-button @click="showLeftScore">score</b-button>
             <b-button @click="rightCurtainShow = !rightCurtainShow;">curtain</b-button> -->
+            <!-- <div style="width:100px"><LuchaChili symbol="afraid"/></div><br> -->
+            <!-- <div style="width:100px"><LuchoMucho symbol="attack"/></div><br> -->
+            <div style="width:500px"><LeftText/></div><br>
         </div>
       <!-- </center> -->
     </center>
@@ -72,11 +83,18 @@
 import * as Ably from 'ably';
 import YouTubePlayer from 'youtube-player';
 import FontAwesome from '../../components/FontAwesome.vue';
+import LuchaChili from '../../components/LuchaChili.vue';
+import LuchoMucho from '../../components/LuchoMucho.vue';
+import BonusBaloon from '../../components/BonusBaloon.vue';
+import LeftText from '../../components/LeftText.vue';
 import posed, { PoseTransition } from "vue-pose";
 export default {
   name: 'app',
   components: {
     FontAwesome,
+    LuchaChili,LuchoMucho,
+    BonusBaloon,
+    LeftText,
     Box: posed.div({
       pressable: true,
       init: { scale: 1 },
@@ -106,6 +124,38 @@ export default {
             duration: 3000,
           }
         }
+      }
+    }),
+    PopBaloon: posed.div({
+      visible: {
+        scale: 1,
+        opacity: 1,
+        transition: {
+          scale:{
+            type: 'spring',
+            stiffness: 100,
+            damping: 1,
+            restDelta: 0.1,
+            restSpeed: 1
+          }
+        }
+      },
+      hidden: {
+        scale: 0,
+        opacity: 0,
+      }
+    }),
+    LuchaEmoji: posed.div({
+      normal: {
+        scale: 1,
+      },
+      shake: {
+        x: true, // We're not using `to` in the transition but want to animate x
+        transition: ({ from, velocity }) => spring({
+          from, velocity,
+          stiffness: 1000,
+          damping: 100
+        })
       }
     }),
     PopScore: posed.div({
@@ -180,6 +230,9 @@ export default {
 
       buttonLeftActive: true,
       buttonRightActive: true,
+
+      bonusBaloonSymbol: null,
+      bonusBaloonShow: false,
     }
   },
   methods: {
@@ -308,6 +361,14 @@ export default {
       this.left.emoji = 'loose';
       this.right.emoji = 'win';
     },
+    showRandomBonusBaloon() {
+      let symbols = ['andale', 'ay-caramba', 'el-impacto', 'que-chulo', 'soy-la-leche']
+      let s = symbols[Math.floor(Math.random() * symbols.length)]
+      console.log(s)
+      this.bonusBaloonSymbol = s;
+      this.bonusBaloonShow = true;
+      setTimeout(() => {this.bonusBaloonShow = false;}, 1000)
+    }
   },
   computed: {
     variantScoreLeft: function() {
