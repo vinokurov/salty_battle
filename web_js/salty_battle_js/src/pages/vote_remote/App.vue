@@ -67,12 +67,14 @@
             </div>
             <b-button @click="unmute">Unmute</b-button>
             <b-button @click="showRandomBonusBaloon">Baloon</b-button>
+            <b-button @click="randomScore">Score</b-button>
             <!-- <b-button @click="showBattleStart">battle</b-button>
             <b-button @click="showLeftScore">score</b-button>
             <b-button @click="rightCurtainShow = !rightCurtainShow;">curtain</b-button> -->
             <!-- <div style="width:100px"><LuchaChili symbol="afraid"/></div><br> -->
             <!-- <div style="width:100px"><LuchoMucho symbol="attack"/></div><br> -->
-            <div style="width:500px"><LeftText/></div><br>
+            <!-- <div style="width:500px"><LeftText/></div><br> -->
+            <div style="width:100%"><HpBar :left="left.score_pcnt" :right="right.score_pcnt"/></div><br>
         </div>
       <!-- </center> -->
     </center>
@@ -87,6 +89,7 @@ import LuchaChili from '../../components/LuchaChili.vue';
 import LuchoMucho from '../../components/LuchoMucho.vue';
 import BonusBaloon from '../../components/BonusBaloon.vue';
 import LeftText from '../../components/LeftText.vue';
+import HpBar from '../../components/HpBar.vue';
 import posed, { PoseTransition } from "vue-pose";
 export default {
   name: 'app',
@@ -95,6 +98,7 @@ export default {
     LuchaChili,LuchoMucho,
     BonusBaloon,
     LeftText,
+    HpBar,
     Box: posed.div({
       pressable: true,
       init: { scale: 1 },
@@ -368,7 +372,13 @@ export default {
       this.bonusBaloonSymbol = s;
       this.bonusBaloonShow = true;
       setTimeout(() => {this.bonusBaloonShow = false;}, 1000)
-    }
+    },
+    randomScore() {
+      let score = Math.random();
+      this.left.score_pcnt = score;
+      this.right.score_pcnt = 1 - score;
+      console.log(score)
+    },
   },
   computed: {
     variantScoreLeft: function() {
