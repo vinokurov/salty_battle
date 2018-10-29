@@ -146,7 +146,7 @@ export default {
       }
     }),
     LuchaEmoji: posed.div({
-      normal: {
+      rest: {
         scale: 1,
       },
       shake: {
@@ -156,7 +156,9 @@ export default {
           stiffness: 1000,
           damping: 100
         })
-      }
+      },
+      win: {scale: 1.3},
+      loose: {scale: 0.7},
     }),
     PopScore: posed.div({
       visible: {
