@@ -9,25 +9,16 @@
 
               <div style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:-50">
                 <div style="height:30%"/>
-                  <PopMessage :pose="bigMessageShow ? 'visible': 'hidden'">
+                  <!-- <PopMessage :pose="bigMessageShow ? 'visible': 'hidden'">
                     <center><h1 class="display-4"><b-badge variant="light">{{bigMessageText}}</b-badge></h1></center>
-                  </PopMessage>
+                  </PopMessage> -->
+                  <TextBigMessage style="width:100%" :label="bigMessageText" />
               </div>
 
               <div style="position:absolute; top:0; left:20%; width:60%; height:30%; z-index:-50">
                 <PopBaloon :pose="bonusBaloonShow?'visible':'hidden'">
                   <BonusBaloon :symbol="bonusBaloonSymbol"/>
                 </PopBaloon>
-              </div>
-
-              <div style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:-50;">
-                <div style="height:15%"/>
-                <center>
-                  <div class="d-flex justify-content-between" style="height:35%;width:90%;">
-                    <PopScore :pose="leftScoreShow ? 'visible': 'hidden'"><h1><b-badge :variant="variantScoreLeft">+{{left.score_increment}}</b-badge></h1></PopScore>
-                    <PopScore :pose="rightScoreShow ? 'visible': 'hidden'"><h1><b-badge :variant="variantScoreRight">+{{right.score_increment}}</b-badge></h1></PopScore>
-                  </div>
-                </center>
               </div>
 
               <div style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:-60;">
@@ -38,27 +29,31 @@
               </div>
 
               <div style="position: absolute;top:0;left:0;width:100%; height:100%;">
-                <b-progress class="mt-2" :max="1" animated height="10%" style="margin-bottom:5%">
-                  <b-progress-bar :value="left.score_pcnt" variant="info"></b-progress-bar>
-                  <b-progress-bar :value="right.score_pcnt" variant="secondary"></b-progress-bar>
-                </b-progress>
-                <div style="height:40%"/>
-                <div class="d-flex justify-content-between" style="height:35%;z-index:10">
-                  <Box style="width:35%">
+                <div style="width:100%;height:10%;"><HpBar :left="left.score_pcnt" :right="right.score_pcnt"/></div>
+                <div class="d-flex justify-content-between" style="height:15%;width:100%">
+                  <div><ScoreIncrement style="height=100%;width:40%" :score="left.score_increment" ref="ref_score_incr_left"/></div>
+                  <div><ScoreIncrement style="height=100%;width:40%;" :score="right.score_increment" ref="ref_score_incr_right"/></div>
+                </div>
+                <div style="height:25%"/>
+                <div class="d-flex justify-content-between" style="height:45%;z-index:10">
+                  <Box style="width:40%">
                     <b-button variant="outline-light" @click="publishLeft" :disabled="!buttonLeftActive" block style="height:100%">
-                      <center>
-                      <i class="far display-4" v-bind:class="'fa-'+emojis[left.emoji]"/><br>
-                      LEFT
-                    </center>
+                      <div style="width:100%">
+                        <svg style="position:relative;display: inline-block;width:100%;height:100%;" viewBox="0 0 300 200">
+                          <LuchoMucho :symbol="emojis[left.emoji]" width="250" x="20"/>
+                          <TextVLabel x="-80" y="140" height="50" label="LEFT"/>
+                        </svg>
+                      </div>
                     </b-button>
                   </Box>
-                  <Box style="width:35%">
+                  <Box style="width:40%">
                     <b-button variant="outline-light" @click="publishRight" :disabled="!buttonRightActive" block style="height:100%">
-                      <center>
-                      <!-- <i class="far display-4" v-bind:class="'fa-'+emojis[right.emoji]"/><br> -->
-                      <div style="width:80%"><LuchaChili symbol="afraid"/></div>
-                      RIGHT
-                    </center>
+                      <div style="width:100%">
+                        <svg style="position:relative;display: inline-block;width:100%;height:100%;" viewBox="0 0 300 200">
+                          <LuchaChili :symbol="emojis[right.emoji]" width="250" x="20"/>
+                          <TextVLabel x="100" y="140" height="50" label="RIGHT"/>
+                        </svg>
+                      </div>
                     </b-button>
                   </Box>
                 </div>
@@ -66,15 +61,14 @@
 
             </div>
             <b-button @click="unmute">Unmute</b-button>
-            <b-button @click="showRandomBonusBaloon">Baloon</b-button>
-            <b-button @click="randomScore">Score</b-button>
+            <!-- <b-button @click="showRandomBonusBaloon">Baloon</b-button>
+            <b-button @click="randomScore">Score</b-button> -->
             <!-- <b-button @click="showBattleStart">battle</b-button>
             <b-button @click="showLeftScore">score</b-button>
             <b-button @click="rightCurtainShow = !rightCurtainShow;">curtain</b-button> -->
             <!-- <div style="width:100px"><LuchaChili symbol="afraid"/></div><br> -->
             <!-- <div style="width:100px"><LuchoMucho symbol="attack"/></div><br> -->
             <!-- <div style="width:500px"><LeftText/></div><br> -->
-            <div style="width:100%"><HpBar :left="left.score_pcnt" :right="right.score_pcnt"/></div><br>
         </div>
       <!-- </center> -->
     </center>
@@ -88,8 +82,10 @@ import FontAwesome from '../../components/FontAwesome.vue';
 import LuchaChili from '../../components/LuchaChili.vue';
 import LuchoMucho from '../../components/LuchoMucho.vue';
 import BonusBaloon from '../../components/BonusBaloon.vue';
-import LeftText from '../../components/LeftText.vue';
 import HpBar from '../../components/HpBar.vue';
+import ScoreIncrement from '../../components/ScoreIncrement.vue';
+import TextVLabel from '../../components/TextVLabel.vue';
+import TextBigMessage from '../../components/TextBigMessage.vue';
 import posed, { PoseTransition } from "vue-pose";
 export default {
   name: 'app',
@@ -97,8 +93,10 @@ export default {
     FontAwesome,
     LuchaChili,LuchoMucho,
     BonusBaloon,
-    LeftText,
     HpBar,
+    ScoreIncrement,
+    TextVLabel,
+    TextBigMessage,
     Box: posed.div({
       pressable: true,
       init: { scale: 1 },
@@ -205,12 +203,12 @@ export default {
       left: {
         score_pcnt: 0.5,
         score_increment: 0,
-        emoji: 'normal',
+        emoji: null,
       },
       right: {
         score_pcnt: 0.5,
         score_increment: 0,
-        emoji: 'normal',
+        emoji: null,
       },
       score_message: '',
       leftShow: true,
@@ -218,11 +216,11 @@ export default {
       leftClass:'',
       battle_started: false,
       emojis: {
-        normal: 'laugh-squint',
-        attack: 'grin-tongue-squint',
-        defence: 'tired',
-        win: 'grin-stars',
-        loose: 'dizzy',
+        normal: 'happy',
+        attack: 'attack',
+        defence: 'afraid',
+        win: 'happy',
+        loose: 'afraid',
       },
 
       leftScoreShow: false,
@@ -256,9 +254,6 @@ export default {
 
         this.left.score_increment = data.left.increment;
         this.right.score_increment = data.right.increment;
-
-        if(this.left.score_increment > 0) {this.showLeftScore()}
-        if(this.right.score_increment > 0) {this.showRightScore()}
 
         this.left.is_bonus = data.left.is_bonus;
         this.right.is_bonus = data.right.is_bonus;
@@ -334,24 +329,14 @@ export default {
     },
     showBigMessage(text) {
       this.bigMessageText = text
-      this.bigMessageShow = true;
-      setTimeout(() => {this.bigMessageShow = false;}, 100)
-    },
-    showLeftScore() {
-      this.leftScoreShow = true;
-      setTimeout(() => {this.leftScoreShow = false;}, 500)
-    },
-    showRightScore() {
-      this.rightScoreShow = true;
-      setTimeout(() => {this.rightScoreShow = false;}, 500)
     },
     bonusLeft() {
-      this.showBigMessage('AY CARAMBA');
+      this.showRandomBonusBaloon();
       this.left.emoji = 'win';
       this.right.emoji = 'loose';
     },
     bonusRight() {
-      this.showBigMessage('AY CARAMBA');
+      this.showRandomBonusBaloon();
       this.left.emoji = 'loose';
       this.right.emoji = 'win';
     },
@@ -380,6 +365,8 @@ export default {
       this.left.score_pcnt = score;
       this.right.score_pcnt = 1 - score;
       console.log(score)
+      this.$refs.ref_score_incr_left.showScore();
+      this.$refs.ref_score_incr_right.showScore();
     },
   },
   computed: {

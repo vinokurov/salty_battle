@@ -1,8 +1,8 @@
 <template>
-  <svg class="svg-content" role="presentation" viewBox="0 0 250 250" preserveAspectRatio="xMidYMid meet">
-    <polygon :points="'125,10 '+leftBar_left+',10 '+leftBar_left+',25, 125,25'" style="fill:#DBC609;stroke:black;stroke-width:2;fill-opacity:1;stroke-opacity:1" />
-    <polygon :points="'125,10 '+rightBar_right+',10 '+rightBar_right+',25, 125,25'" style="fill:#FF06AC;stroke:black;stroke-width:2;fill-opacity:1;stroke-opacity:1" />
-    <rect x="124" y="5" height="25" width="2" style="fill:black;stroke:black;" />
+  <svg role="presentation" viewBox="0 0 250 30">
+    <polygon :points="'125,10 '+leftBar_left+',10 '+leftBar_left+',25, 125,25'" style="fill:#DBC609;stroke:white;stroke-width:2;fill-opacity:1;stroke-opacity:1" />
+    <polygon :points="'125,10 '+rightBar_right+',10 '+rightBar_right+',25, 125,25'" style="fill:#FF06AC;stroke:white;stroke-width:2;fill-opacity:1;stroke-opacity:1" />
+    <rect x="124" y="5" height="25" width="2" style="fill:white;stroke:white;" />
   </svg>
 </template>
 
@@ -24,7 +24,7 @@ export default{
       let from = this.leftBar_left;
       if (this.leftTween){this.leftTween.stop()}
       if (score > 50){
-        let to = 125 - (score-50);
+        let to = 125 - (score-50)*2;
         this.leftTween = spring({from:from, to:to, stiffness:500}).start(v => {this.leftBar_left = v});
       } else{
         this.leftTween = tween({from:from, to:125, duration:100}).start(v => {this.leftBar_left = v});
@@ -35,15 +35,12 @@ export default{
       let from = this.rightBar_right;
       if (this.rightTween){this.rightTween.stop()}
       if (score > 50){
-        let to = 125 + (score-50);
+        let to = 125 + (score-50)*2;
         this.rightTween = spring({from:from, to:to, stiffness:500}).start(v => {this.rightBar_right = v});
       } else{
         this.rightTween = tween({from:from, to:125, duration:100}).start(v => {this.rightBar_right = v});
       }
     }
   },
-  methods: {
-    set_left: function(v) {this.leftBar_left = v}
-  }
 }
 </script>

@@ -1,6 +1,7 @@
 <template>
-  <div class="svg-container">
+  <!-- <div class="svg-container"> -->
   <svg class="svg-content" role="presentation" viewBox="0 0 283.5 283.5" v-svg="'lucho-mucho-' + symbol" preserveAspectRatio="xMidYMid meet">
+    <symbol id="lucho-mucho-null"></symbol>
     <symbol id="lucho-mucho-afraid">
       <g>
       	<path class="st0" d="M144.2,39.5c0.9,0.2,1.9,0.4,2.8,0.5c9.8,0.7,19.6,1.8,29,5.1c6.1,2.1,11.7,5,17,8.7c3.6,2.5,6.7,5.6,9.9,8.6
@@ -829,7 +830,7 @@
       </g>
     </symbol>
   </svg>
-</div>
+<!-- </div> -->
 </template>
 
 <script>
