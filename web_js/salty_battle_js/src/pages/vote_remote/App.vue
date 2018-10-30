@@ -193,6 +193,18 @@ export default {
   mounted() {
     this.youtube_player = YouTubePlayer('player-1');
     this.youtube_player.mute();
+
+    this.channel_stats.history({limit:1000}, (err, messagesPage) => {
+      for(var i=0; i<messagesPage.items.length;i++) {
+        if(messagesPage.items[i].name == 'start_video'){
+          this.startVideo(messagesPage.items[i]);
+          break;
+        }
+        if(messagesPage.items[i].name == 'stop_video'){
+          break;
+        }
+      }
+    })
   },
   data: function() {
     return {
@@ -200,6 +212,8 @@ export default {
       channel_votes: null,
       channel_stats: null,
       youtube_player: null,
+      video_id:null,
+
       left: {
         score_pcnt: 0.5,
         score_increment: 0,
@@ -290,10 +304,14 @@ export default {
     },
     startVideo(message) {
       let data = JSON.parse(message.data)
-      this.youtube_player.loadVideoById(data.video_id, data.starts);
-      setTimeout(() => {
-        this.youtube_player.playVideo();
-      }, 3000);
+      if(this.video_id != data.video_id) {
+
+        this.video_id = data.video_id;
+        this.youtube_player.loadVideoById(data.video_id, data.starts);
+        setTimeout(() => {
+          this.youtube_player.playVideo();
+        }, 3000);
+      }
     },
     stopVideo() {
       this.youtube_player.pauseVideo();

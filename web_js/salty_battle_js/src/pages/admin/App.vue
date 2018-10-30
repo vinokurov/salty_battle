@@ -46,6 +46,9 @@ export default {
         youtubeVideoID: '',
         youtubeVideoStart: null,
 
+        videoStarted: false,
+        videoTimer: null,
+
         videos: {
           'ghx2017': {id: 'cxcQDH-nmxs', t:358},
           'rtsf2018': {id:'cJxHADoRRMs', t: 86},
@@ -68,9 +71,21 @@ export default {
     videoStart() {
       let message = {video_id: this.youtubeVideoID, starts: this.youtubeVideoStart}
       this.channel_stats.publish("start_video", JSON.stringify(message))
+      this.startVideoTimer();
     },
     videoStop() {
+      this.stopVideoTimer();
       this.channel_stats.publish("stop_video", "")
+    },
+    startVideoTimer() {
+      this.videoTimer = setInterval(function() {
+          console.log('resending')
+          let message = {video_id: this.youtubeVideoID, starts: this.youtubeVideoStart}
+          this.channel_stats.publish("start_video", JSON.stringify(message))
+      }.bind(this), 60*1000)
+    },
+    stopVideoTimer() {
+      clearInterval(this.videoTimer);
     },
     getVideoId(key){
       let video = this.videos[key];
