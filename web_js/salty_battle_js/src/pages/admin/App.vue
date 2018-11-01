@@ -129,10 +129,10 @@ export default {
 
     },
     updateStatsDetails(message){
-      console.log(message.data)
-      // let data = JSON.parse(message.data);
-      if(this.statDetailsData.length > 60){this.statDetailsData.pop()}
-      this.statDetailsData.unshift(message.data)
+      var data = message.data
+      Object.keys(data).map((k,i) => {data[k] = data[k].toFixed(2);})
+      if(this.statDetailsData.length > 20){this.statDetailsData.pop()}
+      this.statDetailsData.unshift(data)
     },
     controlTimeoutPublish(){
       this.channel_stats.publish('disabled_timeout', this.controlTimeout)
