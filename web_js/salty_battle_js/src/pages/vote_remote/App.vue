@@ -22,9 +22,9 @@
               </div>
 
               <div style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:-60;">
-                  <div class="d-flex justify-content-between" style="height:100%;width:100%">
-                    <Curtain :pose="leftCurtainShow ? 'visible': 'hidden'" style="width:50%;height:100%;background-color:#000"/>
-                    <Curtain :pose="rightCurtainShow ? 'visible': 'hidden'" style="width:50%;height:100%;background-color:#000"/>
+                  <div class="d-flex justify-content-between" style="height:100%;width:100%;opacity:.7">
+                    <Curtain :pose="leftCurtainShow ? 'visible': 'hidden'" style="width:50%;height:100%;background-color:#000; opacity:.5"/>
+                    <Curtain :pose="rightCurtainShow ? 'visible': 'hidden'" style="width:50%;height:100%;background-color:#000; opacity:.5"/>
                   </div>
               </div>
 
@@ -36,7 +36,7 @@
                 </div>
                 <div style="height:25%"/>
                 <div class="d-flex justify-content-between" style="height:45%;z-index:10">
-                  <Box style="width:40%">
+                  <Box style="width:40%" v-bind:active="buttonLeftActive">
                     <b-button variant="outline-light" @click="publishLeft" :disabled="!buttonLeftActive" block style="height:100%">
                       <div style="width:100%">
                         <svg style="position:relative;display: inline-block;width:100%;height:100%;" viewBox="0 0 300 200">
@@ -46,7 +46,7 @@
                       </div>
                     </b-button>
                   </Box>
-                  <Box style="width:40%">
+                  <Box style="width:40%" v-bind:active="buttonRightActive">
                     <b-button variant="outline-light" @click="publishRight" :disabled="!buttonRightActive" block style="height:100%">
                       <div style="width:100%">
                         <svg style="position:relative;display: inline-block;width:100%;height:100%;" viewBox="0 0 300 200">
@@ -100,7 +100,7 @@ export default {
     Box: posed.div({
       pressable: true,
       init: { scale: 1 },
-      press: { scale: 1.2 },
+      press: { scale: ({active}) => active?1.2:1 },
     }),
     Curtain: posed.div({
       visible: { opacity: 1 },
@@ -180,7 +180,9 @@ export default {
   },
   created() {
       this.client = new Ably.Realtime('iu0Lmw.hC3rhw:MEeGgoGc7kI4xQa1');
-      this.channel_votes = this.client.channels.get("votes");
+      // this.channel_votes = this.client.channels.get("votes");
+      this.channel_votes_left = this.client.channels.get("votes_left");
+      this.channel_votes_right = this.client.channels.get("votes_right");
       this.channel_stats = this.client.channels.get("stats");
 
       this.channel_stats.subscribe('score', this.updateScore);
@@ -189,10 +191,18 @@ export default {
       this.channel_stats.subscribe('start_battle', this.startBattle);
       this.channel_stats.subscribe('stop_battle', this.stopBattle);
 
+      this.channel_stats.subscribe('disabled_timeout', this.updateDisabledTimeout);
+
   },
   mounted() {
-    this.youtube_player = YouTubePlayer('player-1');
+    this.youtube_player = YouTubePlayer('player-1', {
+      playerVars:{
+        playsinline:"1",
+        controls: "0",
+      }
+    });
     this.youtube_player.mute();
+    // this.youtube_player.playsinline = true;
 
     this.channel_stats.history({limit:1000}, (err, messagesPage) => {
       for(var i=0; i<messagesPage.items.length;i++) {
@@ -251,6 +261,8 @@ export default {
 
       bonusBaloonSymbol: null,
       bonusBaloonShow: false,
+
+      disabledTimeout: 250,
     }
   },
   methods: {
@@ -293,14 +305,14 @@ export default {
       }
     },
     publishLeft(){
-      this.channel_votes.publish("left", "1");
+      this.channel_votes_left.publish("vote", "1");
       this.buttonLeftActive = false;
-      setTimeout(()=> {this.buttonLeftActive = true;}, 500)
+      setTimeout(()=> {this.buttonLeftActive = true;}, this.disabledTimeout)
     },
     publishRight(){
-      this.channel_votes.publish("right", "1");
+      this.channel_votes_right.publish("vote", "1");
       this.buttonRightActive = false;
-      setTimeout(()=> {this.buttonRightActive = true;}, 500)
+      setTimeout(()=> {this.buttonRightActive = true;}, this.disabledTimeout)
     },
     startVideo(message) {
       let data = JSON.parse(message.data)
@@ -385,6 +397,10 @@ export default {
       console.log(score)
       this.$refs.ref_score_incr_left.showScore();
       this.$refs.ref_score_incr_right.showScore();
+    },
+    updateDisabledTimeout(message) {
+      console.log(message)
+      this.disabledTimeout = parseInt(message.data)
     },
   },
   computed: {

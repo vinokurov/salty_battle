@@ -52,9 +52,11 @@ class BattleContext:
     def _calculate_score(self, stats_context, score_other):
         score = stats_context.current_y * 1
         is_bonus = False
+        # print(stats_context.z_score, self.bonus_z_threshold)
         if stats_context.z_score and stats_context.z_score > self.bonus_z_threshold:
             score += max(int(score_other / 3.0), self.bonus_score)
             is_bonus = True
+            # print('BONUS')
         return score, is_bonus
 
     @staticmethod

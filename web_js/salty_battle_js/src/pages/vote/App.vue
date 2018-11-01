@@ -31,12 +31,18 @@ export default {
   },
   created() {
       this.client = new Ably.Realtime('iu0Lmw.hC3rhw:MEeGgoGc7kI4xQa1');
-      this.channel_votes = this.client.channels.get("votes");
+      // this.channel_votes = this.client.channels.get("votes");
+      this.channel_votes_left = this.client.channels.get("votes_left");
+      this.channel_votes_right = this.client.channels.get("votes_right");
+
+      this.channel_stats = this.client.channels.get("stats");
+      this.channel_stats.subscribe('disabled_timeout', this.updateDisabledTimeout);
   },
   data: function() {
     return {
         client: null,
         channel_control: null,
+        channel_stats: null,
 
         contestants: [],
         battleName: '',
@@ -45,19 +51,24 @@ export default {
 
         buttonLeftActive: true,
         buttonRightActive: true,
+
+        disabledTimeout: 250,
     }
   },
   methods: {
     publishLeft() {
-      this.channel_votes.publish("left", "1");
+      this.channel_votes_left.publish("vote", "1");
       this.buttonLeftActive = false;
-      setTimeout(()=> {this.buttonLeftActive = true;}, 500)
+      setTimeout(()=> {this.buttonLeftActive = true;}, this.disabledTimeout)
     },
     publishRight() {
-      this.channel_votes.publish("right", "1");
+      this.channel_votes_right.publish("vote", "1");
       this.buttonRightActive = false;
-      setTimeout(()=> {this.buttonRightActive = true;}, 500)
-    }
+      setTimeout(()=> {this.buttonRightActive = true;}, this.disabledTimeout)
+    },
+    updateDisabledTimeout(message) {
+      this.disabledTimeout = parseInt(message.data)
+    },
   }
 }
 </script>

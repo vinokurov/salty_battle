@@ -17,8 +17,36 @@
       <b-button @click="videoStop">STOP</b-button>
       <br/>
       <br/>
-      <b-button size="sm" @click="getVideoId(video)" v-for="d,video in videos">{{video}}</b-button>
+      <!-- <b-button size="sm" @click="getVideoId(video)" v-for="d,video in videos">{{video}}</b-button> -->
     </b-card>
+    <br/>
+
+    <b-card>
+      <h2>Control</h2>
+      <b-input-group prepend="Timeout, ms" size="sm" >
+        <b-form-input v-model="controlTimeout"></b-form-input>
+        <b-input-group-append><b-btn @click="controlTimeoutPublish">Publish</b-btn></b-input-group-append>
+      </b-input-group>
+      <br/>
+
+      <b-input-group prepend="Bonus Z Threshold" size="sm" >
+        <b-form-input v-model="controlBonusThreshold"></b-form-input>
+        <b-input-group-append><b-btn @click="controlBonusThresholdPublish">Publish</b-btn></b-input-group-append>
+      </b-input-group>
+      <br/>
+
+      <!-- <b-button size="sm" @click="getVideoId(video)" v-for="d,video in videos">{{video}}</b-button> -->
+    </b-card>
+    <br/>
+
+
+
+    <b-card>
+      <h2>Stat Details</h2>
+      <b-table striped hover small :items="statDetailsData"
+        :fields="['l_total', 'l_val', 'l_mean', 'l_std', 'l_z', 'r_total', 'r_val', 'r_mean', 'r_std', 'r_z',]"/>
+    </b-card>
+
   </div>
 </template>
 
@@ -32,6 +60,8 @@ export default {
       this.client = new Ably.Realtime('iu0Lmw.hC3rhw:MEeGgoGc7kI4xQa1');
       this.channel_control = this.client.channels.get("control");
       this.channel_stats = this.client.channels.get("stats");
+
+      this.channel_stats.subscribe('stats_details', this.updateStatsDetails);
   },
   data: function() {
     return {
@@ -58,7 +88,12 @@ export default {
           'savoy-3': {id:'59bQ5Vw0YcE', t: 5},
           'savoy-4': {id:'w50fREdubFU', t: 5},
           'savoy-5': {id:'rnMBqEiirTo', t: 5},
-        }
+        },
+
+        statDetailsData: [],
+
+        controlTimeout: 250,
+        controlBonusThreshold: 2.0,
     }
   },
   methods: {
@@ -93,6 +128,18 @@ export default {
       this.youtubeVideoStart = video.t;
 
     },
+    updateStatsDetails(message){
+      console.log(message.data)
+      // let data = JSON.parse(message.data);
+      if(this.statDetailsData.length > 60){this.statDetailsData.pop()}
+      this.statDetailsData.unshift(message.data)
+    },
+    controlTimeoutPublish(){
+      this.channel_stats.publish('disabled_timeout', this.controlTimeout)
+    },
+    controlBonusThresholdPublish(){
+      this.channel_control.publish('bonus_z_threshold', this.controlBonusThreshold)
+    }
   }
 }
 </script>
