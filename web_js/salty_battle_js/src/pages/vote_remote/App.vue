@@ -1,9 +1,9 @@
 <template>
   <div>
       <!-- <center> -->
-      <center style="width=100%; margin:15px; display: block">
+      <center style="width:100%; margin:15px; display: block">
 
-        <div style="width:85%">
+        <div :style="'width:85%'">
             <div style="position:relative;width:100%;height:0;padding-bottom: 56.25%;overflow: hidden;">
               <div id='player-1' style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:-99"></div>
 
@@ -60,9 +60,9 @@
               </div>
 
             </div>
-            <b-button @click="unmute">Unmute</b-button>
-            <!-- <b-button @click="showRandomBonusBaloon">Baloon</b-button>
-            <b-button @click="randomScore">Score</b-button> -->
+            <b-button @click="unmute" variant="dark">Unmute</b-button>
+            <!-- <b-button @click="showRandomBonusBaloon">Baloon</b-button> -->
+            <!-- <b-button @click="randomScore">Score</b-button> -->
             <!-- <b-button @click="showBattleStart">battle</b-button>
             <b-button @click="showLeftScore">score</b-button>
             <b-button @click="rightCurtainShow = !rightCurtainShow;">curtain</b-button> -->
