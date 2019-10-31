@@ -845,7 +845,7 @@ export default {
 .st2{fill:#FFFFFF;}
 .st3{fill:#DE0506;}
 .st4{fill:#070707;}
-.st5{fill:#266608;}
+.st5{fill:#262668;}
 .st6{fill:#ED6826;}
 .st7{fill:#020202;}
 .svg-content {

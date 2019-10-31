@@ -61,8 +61,8 @@
 
             </div>
             <b-button @click="unmute" variant="dark">Unmute</b-button>
-            <!-- <b-button @click="showRandomBonusBaloon">Baloon</b-button> -->
-            <!-- <b-button @click="randomScore">Score</b-button> -->
+            <b-button @click="showRandomBonusBaloon">Baloon</b-button>
+            <b-button @click="randomScore">Score</b-button>
             <!-- <b-button @click="showBattleStart">battle</b-button>
             <b-button @click="showLeftScore">score</b-button>
             <b-button @click="rightCurtainShow = !rightCurtainShow;">curtain</b-button> -->

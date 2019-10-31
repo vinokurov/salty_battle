@@ -1,6 +1,6 @@
 <template>
-  <svg role="img" viewBox="0 0 100 25">
-    <text x="50" y="20" text-anchor="middle" :transform="'scale('+scale+')'" :opacity="opacity" style="fill:black; stroke:white;">
+  <svg role="img" viewBox="0 0 200 50">
+    <text x="100" y="20" text-anchor="middle" :transform="'scale('+scale+')'" :opacity="opacity" style="fill:black; stroke:white;">
       {{label}}
     </text>
   </svg>
@@ -57,9 +57,11 @@ export default {
 		src: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/badaboombb.woff2') format('woff2'),
 		url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/badaboombb.woff') format('woff');
 		font-style: normal;
+		/* font-weight: 400; */
 		font-weight: 400;
 		}
 text {
+			/* font-size: 20px; */
 			font-size: 20px;
 			font-family: BadaboomBB, script;
       text-align:center;
