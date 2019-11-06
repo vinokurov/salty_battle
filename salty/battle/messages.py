@@ -4,7 +4,7 @@ from ably import AblyRest
 from ably.rest.channel import Channel
 from dataclasses import dataclass, field
 from dataclasses_json import DataClassJsonMixin
-from salty.battle.config import ALBY_KEY
+from salty.battle.battle_config import ALBY_KEY
 
 CHANNEL_VOTES = 'votes'
 CHANNEL_VOTES_LEFT = 'votes_left'

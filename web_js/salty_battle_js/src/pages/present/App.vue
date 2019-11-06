@@ -1,74 +1,71 @@
 <template>
   <div>
       <!-- <center> -->
-      <center style="width:100%; margin:15px; display: block">
+      <center style="width:100%; margin:0px; display: block">
 
-        <div :style="'width:85%'">
+        <div :style="'width:100%'">
             <div style="position:relative;width:100%;height:0;padding-bottom: 56.25%;overflow: hidden;">
-              <div id='player-1' style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:-99"></div>
 
-              <div style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:-50">
+              <div style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:0">
                 <div style="height:30%"/>
-                  <!-- <PopMessage :pose="bigMessageShow ? 'visible': 'hidden'">
-                    <center><h1 class="display-4"><b-badge variant="light">{{bigMessageText}}</b-badge></h1></center>
-                  </PopMessage> -->
                   <TextBigMessage style="width:100%" :label="bigMessageText" />
               </div>
 
+              <!-- <div style="position:absolute; top:10%; left:20%; width:60%; height:30%; z-index:50;text-color:black">{{current_second}}</div> -->
+
+              <!-- <div style="position:absolute; top:70%; left:40%; width:20%; height:10%; z-index:50"> -->
               <div style="position:absolute; top:0; left:20%; width:60%; height:30%; z-index:-50">
                 <PopBaloon :pose="bonusBaloonShow?'visible':'hidden'">
                   <BonusBaloon :symbol="bonusBaloonSymbol"/>
                 </PopBaloon>
               </div>
 
-              <div style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:-60;">
-                  <div class="d-flex justify-content-between" style="height:100%;width:100%;opacity:.7">
-                    <Curtain :pose="leftCurtainShow ? 'visible': 'hidden'" style="width:50%;height:100%;background-color:#000; opacity:.5"/>
-                    <Curtain :pose="rightCurtainShow ? 'visible': 'hidden'" style="width:50%;height:100%;background-color:#000; opacity:.5"/>
-                  </div>
+              <div style="position: absolute;top:20%;left:0%;width:100%;height:5%;z-index:-100">
+                <img width="50%" src="salty_battle.jpg"/>
+              </div>
+              
+              <div style="position: absolute;top:5%;left:0%;width:100%;height:5%;z-index:-100">
+                <!-- <h2 class="text-white">https://www.saltyjitterbugs.co.uk</h2> -->
+                <img width="50%" src="url.png"/>
               </div>
 
-              <div style="position: absolute;top:0;left:0;width:100%; height:100%;">
-                <div style="width:100%;height:10%;"><HpBar :left="left.score_pcnt" :right="right.score_pcnt"/></div>
-                <div class="d-flex justify-content-between" style="height:15%;width:100%">
+              <div style="position: absolute;top:80%;left:10%;width:80%;height:5%;"></div>
+
+              <div style="position: absolute;top:70%;left:10%;width:80%;height:5%;">
+                <HpBar :left="left.score_pcnt" :right="right.score_pcnt"/>
+              </div>
+
+              <div style="position: absolute;top:70%;left:12%;width:78%; height:15%;">
+                <div class="d-flex justify-content-between" style="height:100%;width:100%">
                   <div><ScoreIncrement style="height=100%;width:40%" :score="left.score_increment" ref="ref_score_incr_left"/></div>
                   <div><ScoreIncrement style="height=100%;width:40%;" :score="right.score_increment" ref="ref_score_incr_right"/></div>
                 </div>
-                <div style="height:25%"/>
-                <div class="d-flex justify-content-between" style="height:45%;z-index:10">
-                  <Box style="width:40%" v-bind:active="buttonLeftActive">
-                    <b-button variant="outline-light" @click="publishLeft" :disabled="!buttonLeftActive" block style="height:100%">
-                      <div style="width:100%">
-                        <svg style="position:relative;display: inline-block;width:100%;height:100%;" viewBox="0 0 300 200">
-                          <LuchoMucho :symbol="emojis[left.emoji]" width="250" x="20"/>
-                          <TextVLabel x="-80" y="140" height="50" label="LEFT"/>
-                        </svg>
-                      </div>
-                    </b-button>
-                  </Box>
-                  <Box style="width:40%" v-bind:active="buttonRightActive">
-                    <b-button variant="outline-light" @click="publishRight" :disabled="!buttonRightActive" block style="height:100%">
-                      <div style="width:100%">
-                        <svg style="position:relative;display: inline-block;width:100%;height:100%;" viewBox="0 0 300 200">
-                          <LuchaChili :symbol="emojis[right.emoji]" width="250" x="20"/>
-                          <TextVLabel x="100" y="140" height="50" label="RIGHT"/>
-                        </svg>
-                      </div>
-                    </b-button>
-                  </Box>
+              </div>
+
+              <div style="position: absolute;top:70%;left:0;width:100%; height:20%;">
+                <div class="d-flex justify-content-between" style="height:100%;z-index:-10">
+                  <!-- <div style="width:30%"> -->
+                  <LuchaEmoji style="width:30%" :pose="leftLuchaPose">
+                    <svg style="position:relative;display: inline-block;width:100%;height:100%;" viewBox="0 0 300 200">
+                      <LuchoMucho :symbol="emojis[left.emoji]" width="150" x="40"/>
+                      <TextVLabel x="-100" y="40" height="50" label="LEFT"/>
+                    </svg>
+                  </LuchaEmoji>
+                  <!-- </div> -->
+                  <!-- <div style="width:30%"> -->
+                  <LuchaEmoji style="width:30%" :pose="rightLuchaPose">
+                    <svg style="position:relative;display: inline-block;width:100%;height:100%;" viewBox="0 0 300 200">
+                      <LuchaChili :symbol="emojis[right.emoji]" width="150" x="100"/>
+                      <TextVLabel x="130" y="40" height="50" label="RIGHT"/>
+                    </svg>
+                  </LuchaEmoji>
+                  <!-- </div> -->
                 </div>
               </div>
 
             </div>
-            <!-- <b-button @click="unmute" variant="dark">Unmute</b-button> -->
-            <b-button @click="showRandomBonusBaloon">Baloon</b-button>
-            <b-button @click="randomScore">Score</b-button>
-            <!-- <b-button @click="showBattleStart">battle</b-button>
-            <b-button @click="showLeftScore">score</b-button>
-            <b-button @click="rightCurtainShow = !rightCurtainShow;">curtain</b-button> -->
-            <!-- <div style="width:100px"><LuchaChili symbol="afraid"/></div><br> -->
-            <!-- <div style="width:100px"><LuchoMucho symbol="attack"/></div><br> -->
-            <!-- <div style="width:500px"><LeftText/></div><br> -->
+            <!-- <b-button @click="showRandomBonusBaloon">Baloon</b-button> -->
+
         </div>
       <!-- </center> -->
     </center>
@@ -77,7 +74,6 @@
 
 <script>
 import * as Ably from 'ably';
-// import YouTubePlayer from 'youtube-player';
 import FontAwesome from '../../components/FontAwesome.vue';
 import LuchaChili from '../../components/LuchaChili.vue';
 import LuchoMucho from '../../components/LuchoMucho.vue';
@@ -87,6 +83,7 @@ import ScoreIncrement from '../../components/ScoreIncrement.vue';
 import TextVLabel from '../../components/TextVLabel.vue';
 import TextBigMessage from '../../components/TextBigMessage.vue';
 import posed, { PoseTransition } from "vue-pose";
+
 
 export default {
   name: 'app',
@@ -149,7 +146,7 @@ export default {
       }
     }),
     LuchaEmoji: posed.div({
-      rest: {
+      normal: {
         scale: 1,
       },
       shake: {
@@ -162,6 +159,7 @@ export default {
       },
       win: {scale: 1.3},
       loose: {scale: 0.7},
+      hidden: {scale: 0.0},
     }),
     PopScore: posed.div({
       visible: {
@@ -177,56 +175,23 @@ export default {
           }
         }
       }
-    })
+    }),
   },
   created() {
       console.log('Starting')
       this.client = new Ably.Realtime('iu0Lmw.hC3rhw:MEeGgoGc7kI4xQa1');
-      // this.channel_votes = this.client.channels.get("votes");
-      this.channel_votes_left = this.client.channels.get("votes_left");
-      this.channel_votes_right = this.client.channels.get("votes_right");
+
       this.channel_stats = this.client.channels.get("stats");
 
       this.channel_stats.subscribe('score', this.updateScore);
-      // this.channel_stats.subscribe('start_video', this.startVideo);
-      // this.channel_stats.subscribe('stop_video', this.stopVideo);
       this.channel_stats.subscribe('start_battle', this.startBattle);
       this.channel_stats.subscribe('stop_battle', this.stopBattle);
 
-      this.channel_stats.subscribe('disabled_timeout', this.updateDisabledTimeout);
-
   },
-  mounted() {
-    console.log('Mounted')
-    // this.youtube_player = YouTubePlayer('player-1', {
-    //   playerVars:{
-    //     playsinline:"1",
-    //     controls: "0",
-    //   }
-    // });
-    // this.youtube_player.mute();
-    // // this.youtube_player.playsinline = true;
 
-    // this.channel_stats.history({limit:1000}, (err, messagesPage) => {
-    //   for(var i=0; i<messagesPage.items.length;i++) {
-    //     if(messagesPage.items[i].name == 'start_video'){
-    //       this.startVideo(messagesPage.items[i]);
-    //       break;
-    //     }
-    //     if(messagesPage.items[i].name == 'stop_video'){
-    //       break;
-    //     }
-    //   }
-    // })
-  },
   data: function() {
     return {
-      client: null,
-      channel_votes: null,
-      channel_stats: null,
-      // youtube_player: null,
-      // video_id:null,
-
+      current_position:0,
       left: {
         score_pcnt: 0.5,
         score_increment: 0,
@@ -266,13 +231,18 @@ export default {
       bonusBaloonShow: false,
 
       disabledTimeout: 250,
+
+      leftLuchaPose: 'normal',
+      rightLuchaPose: 'normal',
     }
   },
   methods: {
     updateScore(message){
+      console.log(message)
       if (this.battle_started){
         this.score_message = message.data
         let data = JSON.parse(message.data)
+        
         let left_score = parseFloat(data.left.total) + 10;
         let right_score = parseFloat(data.right.total) + 10;
 
@@ -289,14 +259,14 @@ export default {
 
         if (this.left.score_increment > this.right.score_increment) {
           if (data.left.is_bonus) {
-            this.bonusLeft()
+            this.bonusLeft(data.left.bonus_message)
           } else {
             this.left.emoji = 'attack';
             this.right.emoji = 'defence';
           }
         } else if (this.left.score_increment < this.right.score_increment) {
           if (data.right.is_bonus) {
-            this.bonusRight()
+            this.bonusRight(data.right.bonus_message)
           } else {
             this.right.emoji = 'attack';
             this.left.emoji = 'defence';
@@ -307,31 +277,7 @@ export default {
         }
       }
     },
-    publishLeft(){
-      this.channel_votes_left.publish("vote", "1");
-      this.buttonLeftActive = false;
-      setTimeout(()=> {this.buttonLeftActive = true;}, this.disabledTimeout)
-    },
-    publishRight(){
-      this.channel_votes_right.publish("vote", "1");
-      this.buttonRightActive = false;
-      setTimeout(()=> {this.buttonRightActive = true;}, this.disabledTimeout)
-    },
-    // startVideo(message) {
-    //   let data = JSON.parse(message.data)
-    //   if(this.video_id != data.video_id) {
-
-    //     this.video_id = data.video_id;
-    //     this.youtube_player.loadVideoById(data.video_id, data.starts);
-    //     setTimeout(() => {
-    //       this.youtube_player.playVideo();
-    //     }, 3000);
-    //   }
-    // },
-    // stopVideo() {
-    //   this.youtube_player.pauseVideo();
-    // },
-    startBattle(message) {
+    startBattle() {
       this.left = {
         score_pcnt: 0.5,
         score_increment: 0,
@@ -346,64 +292,71 @@ export default {
       this.leftCurtainShow = false;
       this.rightCurtainShow = false;
       this.showBattleStart();
+      this.leftLuchaPose = 'normal'
+      this.rightLuchaPose = 'normal'
     },
     stopBattle(message) {
-      console.log('STOP BATTLE')
-      console.log(message)
       this.battle_started = false;
       if (message.data == 'left'){this.winLeft()}
       else if (message.data == 'right'){this.winRight()}
+      this.leftLuchaPose = 'hiden'
+      this.rightLuchaPose = 'hidden'
     },
     showBattleStart() {
       this.showBigMessage('BATTLE START')
     },
-    // unmute() {
-    //   this.youtube_player.unMute();
-    // },
     showBigMessage(text) {
       this.bigMessageText = text
     },
-    bonusLeft() {
-      this.showRandomBonusBaloon();
+    bonusLeft(label) {
+      this.showBonusBaloon(label);
       this.left.emoji = 'win';
       this.right.emoji = 'loose';
     },
-    bonusRight() {
-      this.showRandomBonusBaloon();
+    bonusRight(label) {
+      this.showBonusBaloon(label);
       this.left.emoji = 'loose';
       this.right.emoji = 'win';
     },
     winLeft(){
       this.showBigMessage('LEFT WINS');
-      this.rightCurtainShow = true;
+      // this.rightCurtainShow = true;
       this.left.emoji = 'win';
       this.right.emoji = 'loose';
     },
     winRight(){
       this.showBigMessage('RIGHT WINS');
-      this.leftCurtainShow = true;
+      // this.leftCurtainShow = true;
       this.left.emoji = 'loose';
       this.right.emoji = 'win';
     },
     showRandomBonusBaloon() {
       let symbols = ['andale', 'ay-caramba', 'el-impacto', 'que-chulo', 'soy-la-leche']
-      let s = symbols[Math.floor(Math.random() * symbols.length)]
-      console.log(s)
-      this.bonusBaloonSymbol = s;
+      let label = symbols[Math.floor(Math.random() * symbols.length)]
+      this.showBonusBaloon(label)
+    },
+    showBonusBaloon(label) {
+      if(!label){
+        let symbols = ['andale', 'ay-caramba', 'el-impacto', 'que-chulo', 'soy-la-leche']
+        label = symbols[Math.floor(Math.random() * symbols.length)]
+      }
+      this.bonusBaloonSymbol = label;
       this.bonusBaloonShow = true;
       setTimeout(() => {this.bonusBaloonShow = false;}, 1000)
     },
-    randomScore() {
-      let score = Math.random();
-      this.left.score_pcnt = score;
-      this.right.score_pcnt = 1 - score;
-      console.log(score)
-      this.$refs.ref_score_incr_left.showScore();
-      this.$refs.ref_score_incr_right.showScore();
-    },
-    updateDisabledTimeout(message) {
+    respondToMessage(message){
       console.log(message)
-      this.disabledTimeout = parseInt(message.data)
+      if(message == 'battle_start') {
+        this.startBattle()
+      } else if (typeof message === 'string' || message instanceof String) {
+        this.showBigMessage(message)
+      } else if("left_lucha_pose" in message) {
+        this.leftLuchaPose = message.left_lucha_pose;
+      } else if("right_lucha_pose" in message) {
+        this.rightLuchaPose = message.right_lucha_pose;
+      }else{
+        this.updateScore(message)
+      }
     },
   },
   computed: {

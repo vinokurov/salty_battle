@@ -1,13 +1,29 @@
 <template>
   <div class="container">
-    <br/>
+      <div id="checkout" class="sticky-top bg-dark py-1 mb-1 ">
+        <div class="container">
+          <div class="row">
+                  <!-- <button type="button"
+                          class="btn btn-dark btn-outline-light"
+                          @click="requestCheckout"
+                          v-b-modal.checkoutModal>
+                      <font-awesome icon="shopping-cart" aria-hidden="true"/>
+                      <span class="checkout-text">({{cart.items.length}}) Checkout</span>
+                  </button> -->
+            <b-button variant="success" @click="battleStart">START</b-button>
+            <b-button variant="danger" @click="battleStop">STOP</b-button>
+          </div>
+        </div>
+      </div>  
+
+    <!-- <br/>
     <b-card>
       <h2>Battle</h2>
       <b-button @click="battleStart">START</b-button>
       <b-button @click="battleStop">STOP</b-button>
     </b-card>
-    <br/>
-    <b-card>
+    <br/> -->
+    <!-- <b-card>
       <h2>Video</h2>
       <b-form inline>
         <b-input placeholder="Video ID" v-model="youtubeVideoID"/>
@@ -17,9 +33,9 @@
       <b-button @click="videoStop">STOP</b-button>
       <br/>
       <br/>
-      <!-- <b-button size="sm" @click="getVideoId(video)" v-for="d,video in videos">{{video}}</b-button> -->
-    </b-card>
-    <br/>
+      <b-button size="sm" @click="getVideoId(video)" v-for="d,video in videos">{{video}}</b-button> -->
+    <!-- </b-card>
+    <br/> -->
 
     <b-card>
       <h2>Control</h2>

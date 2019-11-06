@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 # import pylab
 from ably import AblyRest
-from salty.battle.config import ALBY_KEY
+from salty.battle.battle_config import ALBY_KEY
 
 
 def read_messages(message_history):

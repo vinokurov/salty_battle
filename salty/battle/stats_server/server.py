@@ -82,6 +82,7 @@ class StatsServer:
         for message in read_all_messages(self.channel_control, self.timestamp_start, self.timestamp_end):
             name, data, timestamp = message
             logger.info(message)
+            logger.info(datetime.fromtimestamp(timestamp//1000))
             if name == CONTROL_START_BATTLE:
                 self.start_battle()
             elif name == CONTROL_STOP_BATTLE:
